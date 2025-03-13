@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { analysisDatabase } from '@/lib/database';
+import { dynamic } from '../route-config';
+
+export { dynamic };
 
 export async function POST(request: Request) {
   try {
@@ -19,13 +22,6 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { message: 'Análise não encontrada' },
         { status: 404 }
-      );
-    }
-    
-    if (!analysis.payment || analysis.payment.status !== 'completed') {
-      return NextResponse.json(
-        { message: 'Pagamento não encontrado ou não concluído' },
-        { status: 400 }
       );
     }
     

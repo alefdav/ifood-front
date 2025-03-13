@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { analysisDatabase } from '@/lib/database';
+import { dynamic } from '../route-config';
+
+export { dynamic };
 
 export async function GET(request: Request) {
   try {
@@ -19,13 +22,6 @@ export async function GET(request: Request) {
       return NextResponse.json(
         { message: 'Análise não encontrada' },
         { status: 404 }
-      );
-    }
-    
-    if (!analysis.payment || analysis.payment.status !== 'completed') {
-      return NextResponse.json(
-        { message: 'Pagamento não encontrado ou não concluído' },
-        { status: 400 }
       );
     }
     
@@ -61,11 +57,10 @@ export async function GET(request: Request) {
         weaknesses: analysis.results.weaknesses,
         recommendations: analysis.results.recommendations,
         generatedAt: new Date().toISOString(),
-        purchaseInfo: {
-          customerName: analysis.payment.name,
-          customerEmail: analysis.payment.email,
-          purchaseDate: analysis.payment.paidAt
-        }
+        userInfo: analysis.userInfo ? {
+          name: analysis.userInfo.name,
+          email: analysis.userInfo.email
+        } : null
       }
     });
     

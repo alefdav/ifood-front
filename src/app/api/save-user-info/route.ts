@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { analysisDatabase } from '@/lib/database';
+import { dynamic } from '../route-config';
+
+export { dynamic };
 
 export async function POST(request: Request) {
   try {

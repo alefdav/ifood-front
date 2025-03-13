@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { analysisDatabase } from '@/lib/database';
+import { dynamic } from '../route-config';
+
+export { dynamic };
 
 export async function POST(request: Request) {
   try {

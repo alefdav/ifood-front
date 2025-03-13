@@ -1,5 +1,8 @@
 'use client';
 
+// Configuração para desabilitar a exportação estática
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -28,7 +31,6 @@ export default function PreviewPage() {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -131,13 +133,8 @@ export default function PreviewPage() {
   }, [analysisId, router]);
   
   const handleGetFullReport = () => {
-    setShowPaymentModal(true);
-  };
-  
-  const handlePayment = () => {
-    // Aqui seria implementada a integração com o Stripe
-    // Por enquanto, apenas redirecionamos para a página de pagamento simulada
-    router.push(`/payment?analysisId=${analysisId}`);
+    // Redirecionar para a página de relatório completo
+    router.push(`/report/full?id=${analysisId}`);
   };
   
   const getScoreColor = (score: number) => {
@@ -378,7 +375,7 @@ export default function PreviewPage() {
                 onClick={handleGetFullReport}
                 className="w-full bg-ifood-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
               >
-                Obter relatório completo por R$ 19,90
+                Obter relatório completo
               </button>
             </div>
           </div>
@@ -407,74 +404,6 @@ export default function PreviewPage() {
           </button>
         </div>
       </div>
-      
-      {/* Modal de pagamento */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold">Obter relatório completo</h3>
-                <button 
-                  onClick={() => setShowPaymentModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="mb-6">
-                <p className="text-gray-600 mb-4">
-                  Você está prestes a adquirir o relatório completo de análise para:
-                </p>
-                <div className="bg-gray-50 p-3 rounded-lg flex items-center">
-                  <div className="w-12 h-12 relative rounded overflow-hidden mr-3">
-                    <Image 
-                      src={analysisData.restaurantImage} 
-                      alt={analysisData.restaurantName}
-                      width={48}
-                      height={48}
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-medium">{analysisData.restaurantName}</div>
-                    <div className="text-sm text-gray-500">ID: {analysisData.id}</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-t border-b py-4 my-4">
-                <div className="flex justify-between mb-2">
-                  <span>Relatório completo</span>
-                  <span>R$ 19,90</span>
-                </div>
-                <div className="text-sm text-gray-500">
-                  Pagamento único, sem assinaturas
-                </div>
-              </div>
-              
-              <div className="mt-6">
-                <button
-                  onClick={handlePayment}
-                  className="w-full bg-ifood-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
-                >
-                  Prosseguir para pagamento
-                </button>
-                
-                <button
-                  onClick={() => setShowPaymentModal(false)}
-                  className="w-full mt-3 text-gray-600 hover:text-gray-800 font-medium py-2"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 } 

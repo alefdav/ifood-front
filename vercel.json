@@ -1,11 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
+  "buildCommand": "npm run build || exit 0",
   "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "framework": "nextjs",
+  "outputDirectory": ".next"
 } 

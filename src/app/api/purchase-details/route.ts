@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { analysisDatabase } from '@/lib/database';
+import { dynamic } from '../route-config';
+
+export { dynamic };
 
 export async function GET(request: Request) {
   try {
@@ -22,25 +25,17 @@ export async function GET(request: Request) {
       );
     }
     
-    if (!analysis.payment || analysis.payment.status !== 'completed') {
-      return NextResponse.json(
-        { message: 'Pagamento não encontrado ou não concluído' },
-        { status: 400 }
-      );
-    }
-    
-    // Retornar detalhes da compra
+    // Retornar detalhes da análise
     return NextResponse.json({
       id: analysis.id,
       restaurantName: analysis.results.restaurantName,
       restaurantImage: analysis.results.restaurantImage,
-      email: analysis.payment.email || (analysis.userInfo ? analysis.userInfo.email : ''),
-      purchaseDate: analysis.payment.paidAt,
+      email: analysis.userInfo ? analysis.userInfo.email : '',
       downloadUrl: analysis.reportUrl
     });
     
   } catch (error) {
-    console.error('Erro ao obter detalhes da compra:', error);
+    console.error('Erro ao obter detalhes da análise:', error);
     return NextResponse.json(
       { message: 'Erro interno do servidor' },
       { status: 500 }

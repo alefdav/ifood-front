@@ -5,15 +5,15 @@
 /**
  * Baixa o relatório em PDF
  * @param reportId ID do relatório a ser baixado
- * @param paymentId ID do pagamento associado ao relatório
+ * @param analysisId ID da análise associada ao relatório
  * @returns Blob do arquivo PDF
  */
-export async function downloadReportPDF(reportId: string, paymentId: string): Promise<Blob> {
+export async function downloadReportPDF(reportId: string, analysisId: string): Promise<Blob> {
   try {
     // Em um ambiente real, faríamos uma chamada para o serviço de PDF
-    // Exemplo: const response = await fetch(`/api/reports/${reportId}/download?payment_id=${paymentId}`);
+    // Exemplo: const response = await fetch(`/api/reports/${reportId}/download?analysis_id=${analysisId}`);
     
-    console.log(`Solicitando download do relatório: ${reportId} com pagamento: ${paymentId}`);
+    console.log(`Solicitando download do relatório: ${reportId} para análise: ${analysisId}`);
     
     // Simular um atraso de rede
     await new Promise(resolve => setTimeout(resolve, 2000));

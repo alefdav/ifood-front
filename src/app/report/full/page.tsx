@@ -1,62 +1,39 @@
 'use client';
 
+// Configuração para desabilitar a exportação estática
+export const dynamic = 'force-dynamic';
+
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { verificarStatusPagamento } from '@/lib/payment/stripe';
-import { PaymentStatus } from '@/components/payment/PaymentStatus';
 import { downloadReportPDF, startDownload } from '@/lib/report/download';
 import { CheckCircle, XCircle, AlertCircle, Loader2, Download } from 'lucide-react';
 
 export default function FullReportPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [reportData, setReportData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
   useEffect(() => {
-    // Obter o ID do pagamento da URL
-    const paymentIdFromUrl = searchParams.get('payment_id');
+    // Obter o ID da análise da URL
+    const idFromUrl = searchParams.get('id');
     
-    if (paymentIdFromUrl) {
-      setPaymentId(paymentIdFromUrl);
-      checkPaymentStatus(paymentIdFromUrl);
+    if (idFromUrl) {
+      setAnalysisId(idFromUrl);
+      fetchFullReport(idFromUrl);
     } else {
-      setError('ID de pagamento não encontrado');
+      setError('ID da análise não encontrado');
       setIsLoading(false);
     }
   }, [searchParams]);
 
-  const checkPaymentStatus = async (id: string) => {
-    try {
-      setIsLoading(true);
-      
-      // Verificar o status do pagamento
-      const paymentData = await verificarStatusPagamento(id);
-      
-      // Verificar se o pagamento foi concluído
-      if (paymentData.status === 'completed') {
-        setIsAuthorized(true);
-        // Simular a obtenção do relatório completo
-        fetchFullReport(id);
-      } else {
-        setIsAuthorized(false);
-        setIsLoading(false);
-      }
-    } catch (err) {
-      console.error('Erro ao verificar status do pagamento:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao verificar status do pagamento');
-      setIsLoading(false);
-    }
-  };
-
   const fetchFullReport = async (id: string) => {
     try {
       // Em um cenário real, você faria uma chamada para a API para obter o relatório completo
-      console.log('Obtendo relatório completo para o pagamento:', id);
+      console.log('Obtendo relatório completo para a análise:', id);
       
       // Simular um carregamento
       setTimeout(() => {
@@ -156,7 +133,7 @@ export default function FullReportPage() {
   };
 
   const handleDownloadPDF = async () => {
-    if (!paymentId || !reportData) return;
+    if (!analysisId || !reportData) return;
     
     try {
       setIsDownloading(true);
@@ -165,7 +142,7 @@ export default function FullReportPage() {
       const reportId = `report_${reportData.basic_info.name.toLowerCase().replace(/\s+/g, '_')}`;
       
       // Baixar o PDF
-      const pdfBlob = await downloadReportPDF(reportId, paymentId);
+      const pdfBlob = await downloadReportPDF(reportId, analysisId);
       
       // Iniciar o download no navegador
       startDownload(pdfBlob, `Relatório_${reportData.basic_info.name}.pdf`);
@@ -204,39 +181,6 @@ export default function FullReportPage() {
     );
   }
 
-  if (!isAuthorized) {
-    return (
-      <div className="container mx-auto py-12 px-4">
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-amber-700 mb-2">Acesso não autorizado</h2>
-          <p className="text-amber-600 mb-4">
-            Você precisa concluir o pagamento para acessar o relatório completo.
-          </p>
-          {paymentId && (
-            <div className="mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">Status do pagamento:</p>
-              <PaymentStatus
-                paymentId={paymentId}
-                onStatusChange={(status) => {
-                  if (status === 'completed') {
-                    setIsAuthorized(true);
-                    fetchFullReport(paymentId);
-                  }
-                }}
-              />
-            </div>
-          )}
-          <button
-            onClick={() => router.push('/analysis')}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 mt-4"
-          >
-            Voltar para a análise
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto py-12 px-4">
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
@@ -249,16 +193,16 @@ export default function FullReportPage() {
             <button
               onClick={handleDownloadPDF}
               disabled={isDownloading}
-              className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-70"
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 flex items-center gap-2"
             >
               {isDownloading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   Baixando...
                 </>
               ) : (
                 <>
-                  <Download className="w-4 h-4" />
+                  <Download className="h-4 w-4" />
                   Baixar PDF
                 </>
               )}

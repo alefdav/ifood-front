@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { PaymentButton } from '@/components/payment/PaymentButton';
+import { useRouter } from 'next/navigation';
 
 export default function AnalysisPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [restaurantId, setRestaurantId] = useState('');
@@ -52,6 +53,11 @@ export default function AnalysisPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleViewFullReport = () => {
+    // Redirecionar para a página de relatório completo
+    router.push(`/report/full?id=${restaurantId}`);
   };
 
   return (
@@ -197,19 +203,12 @@ export default function AnalysisPage() {
                 </p>
               </div>
               
-              <PaymentButton
-                amount={9990}
-                metadata={{
-                  restaurantId,
-                  userEmail: email,
-                  userName: name,
-                  reportType: 'full'
-                }}
-                returnUrl={`${window.location.origin}/report/full`}
-                className="w-full"
+              <button
+                onClick={handleViewFullReport}
+                className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors"
               >
-                Comprar Relatório Completo por R$ 99,90
-              </PaymentButton>
+                Ver Relatório Completo
+              </button>
             </div>
           </div>
         )}
