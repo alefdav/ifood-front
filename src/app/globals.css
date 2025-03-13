@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 245, 245, 245;
+  --ifood-red: 234, 46, 73;
+  --ifood-dark-red: 200, 30, 60;
+  --ifood-gray: 75, 75, 75;
+  --ifood-light-gray: 245, 245, 245;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-ifood-red hover:bg-ifood-dark-red text-white font-bold py-2 px-4 rounded transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-100 text-ifood-red border border-ifood-red font-bold py-2 px-4 rounded transition-colors;
+  }
+  
+  .input-primary {
+    @apply border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-ifood-red focus:border-transparent;
+  }
+  
+  .text-ifood-red {
+    @apply text-[#EA2E49];
+  }
+  
+  .text-ifood-dark-red {
+    @apply text-[#C81E3C];
+  }
+  
+  .text-ifood-gray {
+    @apply text-[#4B4B4B];
+  }
+  
+  .bg-ifood-red {
+    @apply bg-[#EA2E49];
+  }
+  
+  .bg-ifood-dark-red {
+    @apply bg-[#C81E3C];
+  }
+  
+  .bg-ifood-light-gray {
+    @apply bg-[#F5F5F5];
+  }
+  
+  .border-ifood-red {
+    @apply border-[#EA2E49];
+  }
+  
+  .ring-ifood-red {
+    @apply ring-[#EA2E49];
+  }
+  
+  .hover\:bg-ifood-red-dark:hover {
+    @apply hover:bg-[#C81E3C];
+  }
+} 
