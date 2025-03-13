@@ -196,7 +196,7 @@ export default function DashboardPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link href={`/results?id=${analysis.id}`} className="text-ifood-red hover:text-red-700 mr-4">
+                      <Link href={`/preview?id=${analysis.id}`} className="text-ifood-red hover:text-red-700 mr-4">
                         Ver detalhes
                       </Link>
                       <button className="text-gray-500 hover:text-gray-700">

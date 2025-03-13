@@ -40,8 +40,8 @@ export default function LinkForm() {
         throw new Error(data.error || 'Erro ao processar a solicitação');
       }
       
-      // Redirecionar para a página de resultados
-      router.push('/results');
+      // Redirecionar para a página de preview
+      router.push('/preview');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocorreu um erro ao processar sua solicitação. Tente novamente.');
       console.error(err);

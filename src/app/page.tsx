@@ -48,8 +48,8 @@ export default function HomePage() {
       
       const data = await response.json();
       
-      // Redirecionar para a página de coleta de dados do usuário
-      router.push(`/user-info?analysisId=${data.analysisId}`);
+      // Redirecionar para a página de preview
+      router.push(`/preview?id=${data.analysisId}`);
     } catch (err: any) {
       setError(err.message || 'Ocorreu um erro ao iniciar a análise');
       setIsLoading(false);

@@ -6,7 +6,10 @@ const nextConfig = {
     domains: ['via.placeholder.com'],
   },
   // Desabilitar a exportação estática para todas as páginas
-  exportPathMap: null,
+  // e configurar para páginas que usam useSearchParams()
+  experimental: {
+    missingSuspenseWithCSRBailout: false
+  }
 }
 
 module.exports = nextConfig 

@@ -52,8 +52,8 @@ export default function AnalyzePage() {
         throw new Error(errorData.message || 'Erro ao analisar estabelecimento');
       }
       
-      // Redirecionar para página de resultados
-      router.push('/results');
+      // Redirecionar para página de preview
+      router.push('/preview');
     } catch (err: any) {
       setError(err.message || 'Ocorreu um erro ao analisar o estabelecimento');
     } finally {
