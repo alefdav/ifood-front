@@ -1,4 +1,7 @@
 @echo off
+echo Limpando cache...
+rmdir /s /q .next
+echo.
 echo Instalando dependencias...
 npm install
 echo.

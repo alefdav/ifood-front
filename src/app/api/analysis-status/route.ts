@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { analysisDatabase } from '../start-analysis/route';
+import { analysisDatabase } from '@/lib/database';
 
 export async function GET(request: Request) {
   try {

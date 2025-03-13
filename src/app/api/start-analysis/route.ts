@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-
-// Simulação de banco de dados em memória
-const analysisDatabase: Record<string, any> = {};
+import { analysisDatabase } from '@/lib/database';
 
 export async function POST(request: Request) {
   try {
@@ -100,7 +98,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
-
-// Exportar o banco de dados para uso em outras rotas
-export { analysisDatabase }; 
+} 
